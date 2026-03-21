@@ -187,3 +187,35 @@ padding: 10px 20px;
 .todohide .container .left .task .checking{
     display: flex;
 }
+
+.dailyhide .list{
+    display: flex;
+    flex-wrap: wrap;
+     gap: 20px;
+background-color: var(--sec);
+height: 80vh;
+overflow: auto;
+margin: 10px;
+padding: 10px 20px;
+border-radius: 10px;
+}
+.dailyhide .list .track{
+    width: 40%;
+    position: relative;
+   height: 34px;
+  
+}
+.dailyhide .list p{
+    position: absolute;
+    top: 0;
+    right: 5%;
+color: #042326;
+}
+.dailyhide .list input{
+    width: 100%;
+    font-size: 25px;
+    background-color: var(--tri1);
+    border: none;
+    margin: auto;
+    color:whitesmoke;
+}

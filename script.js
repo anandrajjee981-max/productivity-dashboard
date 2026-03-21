@@ -22,7 +22,7 @@ multipage();
  function todo(){  
      let input = document.querySelector("#input");
     
-window.deleteTask = function(index) {
+window.deleteTask = function(index) {//i add window so that user can see html update after deletion 
         arr.splice(index, 1);
         render();
     };
@@ -73,3 +73,38 @@ render();
 
   }
     todo();
+
+   
+    let hour = Array.from({ length: 18 }, function(unused, idx) {
+  // yey function khali array return krta hain 
+    return idx; 
+});
+
+let daysum = ""
+hour.forEach(function(val , idx){
+daysum += `
+<div class="track">
+    <p>${6 + val}:00 - ${7 + val}:00</p>
+    <input id = " ${idx}" type="text" placeholder="....">
+</div>
+`
+})
+let container = document.querySelector(".dailyhide .list")
+container.innerHTML = daysum 
+
+let plan = JSON.parse(localStorage.getItem("task")) || {}
+let text = document.querySelectorAll(".dailyhide .list input")
+text.forEach(function(inp){
+     let id = inp.id;
+
+    if(plan[id]){//undefine value ignore karega and ui update
+        inp.value = plan[id];
+    }
+    inp.addEventListener("input", function(e){
+       let id = e.target.id;
+        plan[id] = e.target.value;
+
+        localStorage.setItem("task", JSON.stringify(plan));
+
+    });
+});
