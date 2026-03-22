@@ -74,8 +74,8 @@ render();
   }
     todo();
 
-   
-    let hour = Array.from({ length: 18 }, function(unused, idx) {
+   function dailyplanner(){
+       let hour = Array.from({ length: 18 }, function(unused, idx) {
   // yey function khali array return krta hain 
     return idx; 
 });
@@ -108,3 +108,92 @@ text.forEach(function(inp){
 
     });
 });
+   }
+   dailyplanner();
+   function motivation(){
+    const quoteEl = document.querySelector(".motihide .moti2 h1");
+const authorEl = document.querySelector(".motihide .moti3 h1");
+
+async function getQuote() {
+  if (!quoteEl || !authorEl) return;
+
+  try {
+    quoteEl.innerText = "Loading...";
+    authorEl.innerText = "";
+
+    const res = await fetch("https://dummyjson.com/quotes/random");
+
+    if (!res.ok) throw new Error("API Error");
+
+    const data = await res.json();
+
+    quoteEl.innerText = data.quote;
+    authorEl.innerText = "- " + data.author;
+
+  } catch (err) {
+    console.error(err);
+    quoteEl.innerText = "Failed to load quote 😔";
+    authorEl.innerText = "";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", getQuote);
+document.querySelector(".new-quote-btn")?.addEventListener("click", getQuote);
+   }
+motivation();
+
+let pomotime = document.querySelector(".pomohide .pomotime");
+let start = document.querySelector(".pomohide .pomobox .start");
+let head = document.querySelector(".pomohide .head")
+let pause = document.querySelector(".pomohide .pomobox .pause")
+let restart = document.querySelector(".pomohide .pomobox .restart")
+let iswork = true; 
+let totalsec = 25 * 60; 
+let timeset;
+
+// Sirf screen par time dikhane ke liye
+function updateUI() {
+    let minute = Math.floor(totalsec / 60);
+    let sec = totalsec % 60;
+    pomotime.innerHTML = `${String(minute).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+function pausetime(){
+   clearInterval(timeset);
+   timeset = null;//maine yey phele nhi rkha tha too yey pause click badd start click hee nhi hota tha
+}
+start.addEventListener("click", function () {
+    if (timeset) return; 
+
+    timeset = setInterval(function () {
+        if (totalsec > 0) {
+            totalsec--; 
+            updateUI();
+        } else {
+            // Jab time 0 ho jaye tab switch karein
+            clearInterval(timeset);
+            timeset = null;
+
+            if (iswork) {
+                head.style.backgroundColor = "var(--blue)"
+                head.innerHTML = "Work Done! Break starts."
+                new Audio("victory.mp3").play();
+                iswork = false;
+                totalsec = 5 * 60; // 5 min break
+            } else {
+              head.style.backgroundColor= "#033408"
+                head.innerHTML = "Break Over! Back to work.."
+                iswork = true;
+                totalsec = 25 * 60; // 25 min work
+            }
+            
+            updateUI();
+            // Agar break automatically start karni hai toh yahan start.click() trigger kar sakte hain
+        }
+    }, 10); // 1000ms = 1 second (Testing ke liye 10ms thik hai, par final ke liye 1000 karein)
+});
+pause.addEventListener("click",pausetime)
+restart.addEventListener("click",function(){
+    totalsec = 25*60;
+    head.style.backgroundColor= "#033408"
+                head.innerHTML = "let's comeback"
+})
