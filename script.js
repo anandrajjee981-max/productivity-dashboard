@@ -141,8 +141,8 @@ document.addEventListener("DOMContentLoaded", getQuote);
 document.querySelector(".new-quote-btn")?.addEventListener("click", getQuote);
    }
 motivation();
-
-let pomotime = document.querySelector(".pomohide .pomotime");
+function pomodoro(){
+   let pomotime = document.querySelector(".pomohide .pomotime");
 let start = document.querySelector(".pomohide .pomobox .start");
 let head = document.querySelector(".pomohide .head")
 let pause = document.querySelector(".pomohide .pomobox .pause")
@@ -189,11 +189,124 @@ start.addEventListener("click", function () {
             updateUI();
             // Agar break automatically start karni hai toh yahan start.click() trigger kar sakte hain
         }
-    }, 10); // 1000ms = 1 second (Testing ke liye 10ms thik hai, par final ke liye 1000 karein)
+    }, 1000); // 1000ms = 1 second (Testing ke liye 10ms thik hai, par final ke liye 1000 karein)
 });
 pause.addEventListener("click",pausetime)
 restart.addEventListener("click",function(){
     totalsec = 25*60;
     head.style.backgroundColor= "#033408"
                 head.innerHTML = "let's comeback"
-})
+}) 
+}
+pomodoro();
+
+const apiKey = "bcf212a5a67ef0c626e4a8da415d0ccd";
+
+
+const date = document.querySelector(".allelem .left1 .date");
+const time = document.querySelector(".allelem .left1 .time");
+const tempEl = document.querySelector(".allelem .right1 .temp");
+const windEl = document.querySelector(".allelem .right1 .wind");
+const cityEl = document.querySelector(".allelem .right1 .city"); // optional
+
+let fallbackCity = "Ranchi";
+
+
+// 🌦️ Weather by Coordinates
+async function getWeatherByCoords(lat, lon) {
+  try {
+    tempEl.textContent = "Loading...";
+
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    );
+
+    const data = await res.json();
+
+    tempEl.textContent = data.main.temp + "°C";
+    windEl.textContent = data.wind.speed + " m/s";
+
+    if (cityEl) {
+      cityEl.textContent = data.name;
+    }
+
+  } catch (err) {
+    console.log("Error:", err);
+  }
+}
+
+
+// 🌍 Get User Location
+function getUserLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        let lat = pos.coords.latitude;
+        let lon = pos.coords.longitude;
+
+        getWeatherByCoords(lat, lon);
+      },
+      (err) => {
+        console.log("Location denied ❌ → fallback city");
+        getWeatherByCity(fallbackCity);
+      }
+    );
+  } else {
+    alert("Geolocation not supported");
+    getWeatherByCity(fallbackCity);
+  }
+}
+
+
+// 🌆 Weather by City (Fallback)
+async function getWeatherByCity(city) {
+  try {
+    tempEl.textContent = "Loading...";
+
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+    );
+
+    const data = await res.json();
+
+    if (data.cod == "404") {
+      alert("City not found ❌");
+      return;
+    }
+
+    tempEl.textContent = data.main.temp + "°C";
+    windEl.textContent = data.wind.speed + " m/s";
+
+    if (cityEl) {
+      cityEl.textContent = data.name;
+    }
+
+  } catch (err) {
+    console.log("Error:", err);
+  }
+}
+
+
+// 🕒 Time Update
+function updateTime() {
+  const now = new Date();
+
+  date.innerText = now.toDateString();
+
+  time.innerText = now.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+}
+
+
+// 🚀 First Load
+getUserLocation();
+updateTime();
+
+
+// 🔁 Intervals
+setInterval(getUserLocation, 60000); // weather update (1 min)
+setInterval(updateTime, 1000); // time update (1 sec)
+
