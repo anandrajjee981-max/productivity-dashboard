@@ -199,8 +199,8 @@ restart.addEventListener("click",function(){
 }) 
 }
 pomodoro();
-
-const apiKey = "bcf212a5a67ef0c626e4a8da415d0ccd";
+function weatherreport(){
+  const apiKey = "bcf212a5a67ef0c626e4a8da415d0ccd";
 
 
 const date = document.querySelector(".allelem .left1 .date");
@@ -310,3 +310,34 @@ updateTime();
 setInterval(getUserLocation, 60000); // weather update (1 min)
 setInterval(updateTime, 1000); // time update (1 sec)
 
+
+}
+weatherreport()
+let theme = document.querySelector(".allelem .nav .theme");
+let main = document.querySelector(":root"); // ya body/main jo use kar rahe ho
+let x = 0 ;
+theme.addEventListener("click", function () {
+  if(x==0){
+main.style.setProperty("--pre", "#222831");
+main.style.setProperty("--sec", "#393E46");
+main.style.setProperty("--tri1", "#FFD369");
+main.style.setProperty("--tri2", "#EEEEEE");
+x = 1;
+  }
+else if(x==1){
+  main.style.setProperty("--pre", "#4B352A");
+main.style.setProperty("--sec", "#CA7842");
+main.style.setProperty("--tri1", "#B2CD9C");
+main.style.setProperty("--tri2", "#F0F2BD");
+x = 2;
+}
+else if(x == 2){
+ main.style.setProperty("--pre", "#042326");
+main.style.setProperty("--sec", "#0A3A40");
+main.style.setProperty("--tri1", "#0F5959");
+main.style.setProperty("--tri2", "#1D7373");
+x = 0
+
+}
+  
+});

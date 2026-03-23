@@ -280,7 +280,7 @@ margin-top: 10%;
      margin: 15px;
   padding: 12px 28px;
   border: none;
-    color: antiquewhite;
+    color: rgb(38, 36, 33);
   border-radius: 8px;
   font-family: 'Segoe UI', Roboto, sans-serif;
   font-weight: 600;
@@ -342,4 +342,10 @@ color: antiquewhite;
     margin-top: 0%;
     background-color:var(--tri1);
     font-size: 0.7 em;
+}
+
+.goal .intro{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
