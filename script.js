@@ -313,6 +313,7 @@ setInterval(updateTime, 1000); // time update (1 sec)
 
 }
 weatherreport()
+function change(){
 let theme = document.querySelector(".allelem .nav .theme");
 let main = document.querySelector(":root"); // ya body/main jo use kar rahe ho
 let x = 0 ;
@@ -325,10 +326,10 @@ main.style.setProperty("--tri2", "#EEEEEE");
 x = 1;
   }
 else if(x==1){
-  main.style.setProperty("--pre", "#4B352A");
-main.style.setProperty("--sec", "#CA7842");
-main.style.setProperty("--tri1", "#B2CD9C");
-main.style.setProperty("--tri2", "#F0F2BD");
+  main.style.setProperty("--pre", "#0D4A3A");
+main.style.setProperty("--sec", "#2D5731");
+main.style.setProperty("--tri1", "#526126");
+main.style.setProperty("--tri2", "#7B6823");
 x = 2;
 }
 else if(x == 2){
@@ -341,3 +342,94 @@ x = 0
 }
   
 });
+}
+change();
+
+function updategoal(){
+  let sum3 = "";
+
+  arr1.forEach(function(val, index){
+    console.log(val)
+    sum3 += `
+      <div class = "abc" style="
+        aspect-ratio:1/1;
+        height:20vh;
+        background:${val.color};
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:10px;
+        position:relative;
+        
+      ">
+        ${val.text}
+        <button onclick="removeGoal(${index})"
+          style="position:absolute; bottom:5px; right:5px;">
+          remove
+        </button>
+      </div>
+    `;
+  });
+
+  goalbox.innerHTML = sum3;
+  localStorage.setItem("goals", JSON.stringify(arr1));
+}
+
+
+
+// 🔧 delete fix
+function removeGoal(index){
+  arr1.splice(index, 1);
+  updategoal();
+}
+
+let arr1 = JSON.parse(localStorage.getItem("goals")) || [];
+let goalbox = document.querySelector(".goal .goalbox");
+let form = document.querySelector(".goal .newgoal form");
+let input = document.querySelector(".goal .newgoal .newadd");
+// let abc = document.querySelectorAll("goal .goalbox .abc")
+// let change = 0 ;
+// abc.addEventListener("click",function(){
+//   if(change == 0){
+// abc.style.opacity = 0.5;
+// change = 1 ;
+//   }
+//   else{
+//     abc.style.opacity = 1;
+//     change= 0
+//   }
+  
+// })
+goalbox.addEventListener("click", function(e){
+
+  if(e.target.tagName === "BUTTON") return; // 🔥 skip button
+
+  let card = e.target.closest(".abc");
+  if(!card) return;
+
+  card.style.opacity = card.style.opacity === "0.4" ? "1" : "0.4";
+});
+form.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  if(input.value.trim() === "") return;
+
+  let a = Math.floor(Math.random()*256);
+  let b = Math.floor(Math.random()*256);
+  let c = Math.floor(Math.random()*256);
+
+  // 🔧 BUG FIX: value save before clearing
+  let text = input.value;
+
+  arr1.push({
+    text: text,
+    color: `rgb(${a},${b},${c})`
+  });
+
+  input.value = "";
+
+  updategoal(); // 🔧 only render from here
+});
+
+// 🔧 initial render
+updategoal();
