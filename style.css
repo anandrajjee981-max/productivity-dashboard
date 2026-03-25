@@ -100,12 +100,15 @@ padding :10px;
 } 
     **/
 .todohide .container{
-    margin-top: 5%;
+   margin-top: 5%;
     display: flex;
-    
+    flex-wrap: wrap;
+    flex-direction: row; /* Desktop: Side by side */
+    width: 100%;
 }
 .todohide .container .right {
     width: 35%;
+   
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
@@ -142,7 +145,7 @@ border: none;
 padding: 10px 20px;
 }
 .todohide .container .left{
-    width:65%;
+    width:60%;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -360,4 +363,23 @@ color: antiquewhite;
     flex-wrap: wrap;
     gap: 10px;
     
+}
+@media (max-width: 768px) {
+    .todohide .container {
+        flex-direction: column;
+    }
+
+  .todohide .container .right{
+    width: 100%;
+  }
+  .todohide .container .left{
+    width: 100%;
+  }
+  .dailyhide .list .track{
+    width: 100%;
+  }
+  .motihide .moticard{
+    position: none;
+    width: 100%;
+  }
 }

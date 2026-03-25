@@ -37,7 +37,7 @@ function render(){
 </span>
              </h1>
            
-            <button onclick="deleteTask(${idx})">Delete</button>
+            <button onclick="deleteTask(${idx})">mark as complete</button>
         </div>`;
     });
 
